@@ -1,25 +1,25 @@
 {
-  "name": "tp-esimed-2023-ca",
+  "name": "correction",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "start:dev": "nodemon index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AdrienCpr/tp-esimed-2023-CA.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AdrienCpr/tp-esimed-2023-CA/issues"
-  },
-  "homepage": "https://github.com/AdrienCpr/tp-esimed-2023-CA#readme",
   "devDependencies": {
     "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "luxon": "^3.2.1",
+    "md5": "^2.3.0",
+    "sequelize": "^6.28.0",
+    "sqlite3": "^5.1.4",
+    "uuid": "^9.0.0"
   }
 }
