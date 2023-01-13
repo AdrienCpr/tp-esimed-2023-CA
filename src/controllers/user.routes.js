@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { User } = require('../models/user.model.js');
+const { body, validationResult } = require('express-validator');
 
 router.get('/test-sqlite', async (req, res) => {
   const jane = await User.create({
@@ -30,7 +31,15 @@ router.get('/:firstName', async (req, res) => {
   res.send(foundUser);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', 
+  body('firstName').isAlphanumeric(),
+  body('lastName').isAlphanumeric(),
+  body('password').isLength({ min: 5 }),
+async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   await userRepository.createUser(req.body);
   res.status(201).end();
 });
