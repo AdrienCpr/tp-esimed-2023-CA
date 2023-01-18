@@ -27,8 +27,11 @@ router.post('/login',
     console.log(psw);
     if(psw === true)
     {
-        const token = jwt.sign({ id: foundUser.id },  process.env.SECRET_KEY , { expiresIn: process.env.JWT_EXPIRES_IN });
-
+        const token = jwt.sign({ userId: toString(foundUser.id),  
+                                firstName: toString(foundUser.firstName), 
+                                lastName : toString(foundUser.lastName), 
+                                permissions : [foundUser.isAdmin ? 'admin' : '']},  
+                            process.env.SECRET_KEY , { expiresIn: process.env.JWT_EXPIRES_IN });
         res.status(200).send({token})
     } else {
         res.sendStatus(401)

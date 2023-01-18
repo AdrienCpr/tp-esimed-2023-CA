@@ -3,11 +3,21 @@ const { DateTime } = require('luxon');
 const cors = require('cors')
 const { expressjwt: jwt } = require("express-jwt");
 require('dotenv').config()
+const guard = require('express-jwt-permissions')()
+
 
 const initJsonHandlerMiddlware = (app) => app.use(express.json());
 const staticMiddlware = (app) => app.use(express.static('public'));
 const corsMiddlware = (app) => app.use(cors());
+// const adminMiddlware = (app) => app.use(guard.check('admin'));
 
+const errorAdminHandlingMiddleware = (app) => {
+  app.use(function (err, req, res, next) {
+    if (err.code === 'permission_denied') {
+      res.status(403).send('Forbidden');
+    }
+  });
+};
 
 const initLoggerMiddlware = (app) => {
   app.use((req, res, next) => {
@@ -43,6 +53,8 @@ exports.initializeConfigMiddlewares = (app) => {
   staticMiddlware(app);
   corsMiddlware(app);
   tokenMiddlware(app);
+  errorAdminHandlingMiddleware(app);
+  // adminMiddlware(app);
 }
 
 exports.initializeErrorMiddlwares = (app) => {
