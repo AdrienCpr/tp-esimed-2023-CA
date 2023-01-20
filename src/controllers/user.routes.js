@@ -3,7 +3,9 @@ const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { User } = require('../models/user.model.js');
 const { body, validationResult } = require('express-validator');
-const guard = require('express-jwt-permissions')();
+const guard = require('express-jwt-permissions')({
+  requestProperty: 'auth',
+});
 
 router.get('/test-sqlite', async (req, res) => {
   const jane = await User.create({
@@ -23,6 +25,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:firstName', guard.check(['admin']), async (req, res) => {
+// router.get('/:firstName', async (req, res) => {
   const foundUser = await userRepository.getUserByFirstName(req.params.firstName);
 
   if (!foundUser) {
@@ -48,11 +51,13 @@ async (req, res) => {
 });
 
 router.put('/:id',guard.check(['admin']), async (req, res) => {
+// router.put('/:id', async (req, res) => {
   await userRepository.updateUser(req.params.id, req.body).catch((err) => res.status(500).send(err.message));
   res.status(204).end();
 });
 
 router.delete('/:id',guard.check(['admin']), async (req, res) => {
+// router.delete('/:id', async (req, res) => {
   await userRepository.deleteUser(req.params.id);
   res.status(204).end();
 });

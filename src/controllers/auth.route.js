@@ -24,14 +24,13 @@ router.post('/login',
     // console.log(foundUser);
     const psw = bcrypt.compareSync(req.body.password, foundUser.password)
   
-    console.log(psw);
     if(psw === true)
     {
-        const token = jwt.sign({ userId: toString(foundUser.id),  
-                                firstName: toString(foundUser.firstName), 
-                                lastName : toString(foundUser.lastName), 
+        const token = jwt.sign({userId: foundUser.id,  
+                                firstName: foundUser.firstName, 
+                                lastName : foundUser.lastName, 
                                 permissions : [foundUser.isAdmin ? 'admin' : '']},  
-                            process.env.SECRET_KEY , { expiresIn: process.env.JWT_EXPIRES_IN });
+                                process.env.SECRET_KEY , { expiresIn: process.env.JWT_EXPIRES_IN });
         res.status(200).send({token})
     } else {
         res.sendStatus(401)
